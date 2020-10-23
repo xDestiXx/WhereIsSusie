@@ -11,7 +11,7 @@ class GameScene extends Scene{
 
     create(){
         console.log('scena gry')
-        this.add.image(300, 200, 'menu')
+        //this.add.image(300, 200, 'menu')
 
     }
 }

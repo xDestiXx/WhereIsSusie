@@ -2,7 +2,7 @@ import { Scene } from 'phaser';
 
 class MainMenu extends Scene{
     constructor() {
-        super('mainmenu');
+        super('main-menu');
 
     }
     preload(){
@@ -12,11 +12,32 @@ class MainMenu extends Scene{
 
     create(){
         console.log('Create w mainmenu')
-        let buttonStartGame = this.add.image(300, 300, 'menu').setInteractive();
 
-        this.input.on('pointerover', () =>{
-            buttonStartGame.setTint(0xFF0905)
+        let logo = this.add.image(400, 150, 'logo').setScale(0.5, 0.4);
+
+        let buttonStartGame = this.add.image(400, 300, 'play-button').setInteractive().setScale(0.5);
+        let buttonAbout = this.add.image(400, 340, 'about-button').setInteractive().setScale(0.5)
+        buttonStartGame.alpha = 0.7
+        buttonAbout.alpha = 0.7
+
+        buttonStartGame.on('pointerover', () =>{
+            buttonStartGame.alpha = 1
         })
+
+        buttonAbout.on('pointerover', () =>{
+            buttonAbout.alpha = 1
+        });
+
+        this.input.on('pointerout', () => {
+            buttonStartGame.alpha = 0.7;
+            buttonAbout.alpha = 0.7
+        })
+
+//----start sceny gry
+        buttonStartGame.on('pointerdown', () => {
+            this.scene.start('game')
+        })
+
         // buttonStartGame = this.game.add.button(this.game.world.centerX - 95, 400, 'button1', this.startGame(), this, 2, 1, 0);
         // buttonStartGame.width = 40;
         // buttonStartGame.height = 40;
