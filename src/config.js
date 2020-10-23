@@ -1,5 +1,7 @@
 import Phaser from 'phaser'
 import PreloadScene from './PreloadScene';
+import GameScene from "./GameScene";
+import MainMenu from "./MainMenu";
 
 
 const config = {
@@ -7,7 +9,7 @@ const config = {
     parent: 'phaser-example',
     width: 800,
     height: 600,
-    scene: PreloadScene,
+    scene: [PreloadScene, MainMenu, GameScene],
 };
 
 export { config };

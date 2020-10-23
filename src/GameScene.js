@@ -6,12 +6,13 @@ class GameScene extends Scene{
     }
 
     preload(){
-
+        this.load.image('menu', 'assets/star.png');
     }
 
     create(){
+        console.log('scena gry')
+        this.add.image(300, 200, 'menu')
 
     }
-
-
 }
+export default GameScene;

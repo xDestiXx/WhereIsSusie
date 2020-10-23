@@ -2,16 +2,22 @@ import { Scene } from 'phaser';
 
 class MainMenu extends Scene{
     constructor() {
-        super('menu');
+        super('mainmenu');
 
     }
     preload(){
+        console.log('preload w mainmenu')
+        // this.load.image('')
     }
 
     create(){
-        console.log('COs tam wyszł')
-        let buttonStartGame;
-        buttonStartGame = game.add.button(game.world.centerX - 95, 400, 'button1', this.startGame(), this, 2, 1, 0);
+        console.log('Create w mainmenu')
+        let buttonStartGame = this.add.image(300, 300, 'menu').setInteractive();
+
+        this.input.on('pointerover', () =>{
+            buttonStartGame.setTint(0xFF0905)
+        })
+        // buttonStartGame = this.game.add.button(this.game.world.centerX - 95, 400, 'button1', this.startGame(), this, 2, 1, 0);
         // buttonStartGame.width = 40;
         // buttonStartGame.height = 40;
         // buttonStartGame.add.image(200,200, 'star');
@@ -28,3 +34,5 @@ class MainMenu extends Scene{
         this.scene.start('game')
     }
 }
+
+export default MainMenu;

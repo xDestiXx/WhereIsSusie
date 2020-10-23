@@ -12,15 +12,15 @@ class PreloadScene extends Scene {
     create() {
         var logo = this.add.image(400, 150, 'logo');
 
-        this.tweens.add({
-            targets: logo,
-            y: 450,
-            duration: 200,
-            ease: 'Power',
-            yoyo: true,
-            loop: -1
-        });
-        this.input.on('pointerdown', () =>this.scene.start('menu'));
+        // this.tweens.add({
+        //     targets: logo,
+        //     y: 450,
+        //     duration: 2000,
+        //     ease: 'Power',
+        //     yoyo: true,
+        //     loop: -1
+        // });
+        this.input.on('pointerdown', () => this.scene.start('mainmenu'));
 
     }
 }
