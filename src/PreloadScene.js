@@ -8,6 +8,14 @@ class PreloadScene extends Scene {
         this.load.image('logo', 'assets/logo.png');
         this.load.image('play-button', 'assets/play.png');
         this.load.image('about-button', 'assets/about.png');
+        //ładowanie assetów gry
+        this.load.image('tiles','assets/where-is-Susie.png');
+        this.load.image('star','assets/star.png');
+        this.load.tilemapTiledJSON('map', 'assets/mapaaCSM.json');
+        this.load.spritesheet('dude',
+            'assets/dude.png',
+            { frameWidth: 24, frameHeight: 22 }
+        );
     }
 
     create() {

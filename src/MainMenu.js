@@ -37,6 +37,10 @@ class MainMenu extends Scene{
         buttonStartGame.on('pointerdown', () => {
             this.scene.start('game')
         })
+//----About
+        buttonAbout.on('pointerdown', () =>{
+            this.scene.start('about-scene')
+        })
 
         // buttonStartGame = this.game.add.button(this.game.world.centerX - 95, 400, 'button1', this.startGame(), this, 2, 1, 0);
         // buttonStartGame.width = 40;
