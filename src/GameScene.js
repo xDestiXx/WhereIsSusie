@@ -3,6 +3,7 @@ import { Scene } from 'phaser';
 class GameScene extends Scene{
     constructor() {
         super('game');
+        this.timee = 1000
 
     }
 
@@ -23,6 +24,7 @@ class GameScene extends Scene{
         worldLayer.setCollisionByProperty({ collides: true });
         this.createPlayer();
         this.createCursors();
+        this.timeConsole();
         // player = this.physics.add
         //     .sprite(250, 450, 'star')
         //.setSize(32, 48)
@@ -87,6 +89,7 @@ class GameScene extends Scene{
 
         if(this.A.isDown){
             this.scene.start('main-menu')
+            this.timee = 1000
         }
 
         // Normalize and scale the velocity so that player can't move faster along a diagonal
@@ -101,6 +104,17 @@ class GameScene extends Scene{
         this.A = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
         this.D = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
         this.spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+    }
+    timeConsole(){
+        this.time.addEvent({
+            delay: 1000,
+            callback: () =>{
+                this.timee--
+                console.log(this.timee)
+            },
+            loop: true
+            }
+        )
     }
 }
 export default GameScene;
