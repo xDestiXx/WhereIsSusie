@@ -10,7 +10,7 @@ const config = {
     parent: 'phaser-example',
     width: 800,
     height: 600,
-    pixelArt: true,
+    pixelArt: false,
     scale: {
         mode: Phaser.Scale.FIT,
         autoCenter: Phaser.Scale.CENTER_BOTH,

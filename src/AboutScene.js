@@ -9,7 +9,7 @@ class AboutScene extends Scene{
         console.log('Czy działa?')
     }
     create(){
-        let aboutText = this.add.text(200, 600, "Where is Susie\n\nKod\n P.Sz\n\nPomysł\n P.Sz\n\nGrafika\n M.M\n\n\nMiłego grania.",{
+        let aboutText = this.add.text(200, 600, "Where is Susie\n\nKod\n P.Sz\n\nPomysł\n P.Sz\n\nGrafika\n P.Sz\n\n\nMiłego grania.",{
             font: "24px monospace",
             fill: "#ffffff",
             align: "center",
@@ -25,6 +25,32 @@ class AboutScene extends Scene{
             yoyo: false,
             loop: 0
         });
+        this.time.addEvent({
+            delay: 2000,
+            callback: () => {
+                let backToMenuButton = this.add.image(400, 500, 'about-button').setInteractive().setScale(0.5)
+                backToMenuButton.alpha = 0.7
+                backToMenuButton.alpha = 0.7
+
+                backToMenuButton.on('pointerover', () =>{
+                    backToMenuButton.alpha = 1
+                })
+
+                this.input.on('pointerout', () => {
+                    backToMenuButton.alpha = 0.7;
+                })
+
+//----start sceny gry
+                backToMenuButton.on('pointerdown', () => {
+                    this.scene.start('main-menu')
+                })
+
+        }
+        })
+
+    }
+    addBackButton(){
+
     }
 }
 

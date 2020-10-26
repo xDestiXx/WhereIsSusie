@@ -21,20 +21,21 @@ class GameScene extends Scene{
         const worldLayer = map.createStaticLayer("world", tileset, 0, 0);
 
         worldLayer.setCollisionByProperty({ collides: true });
-
-        player = this.physics.add
-            .sprite(50, 450, 'star')
+        this.createPlayer();
+        this.createCursors();
+        // player = this.physics.add
+        //     .sprite(250, 450, 'star')
         //.setSize(32, 48)
         //.setOffset(0, 24);
 
         // Watch the player and worldLayer for collisions, for the duration of the scene:
-        this.physics.add.collider(player, worldLayer);
+        this.physics.add.collider(this.player, worldLayer);
         this. cameras.main.roundPixels = true;
         const camera = this.cameras.main;
-        camera.startFollow(player);
+        camera.startFollow(this.player);
         camera.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
 
-        cursors = this.input.keyboard.createCursorKeys();
+
 
         // // Help text that has a "fixed" position on the screen
         // this.add
@@ -63,30 +64,43 @@ class GameScene extends Scene{
     }
     update(time, delta) {
         const speed = 175;
-        const prevVelocity = player.body.velocity.clone();
+        const prevVelocity = this.player.body.velocity.clone();
 
         // Stop any previous movement from the last frame
-        player.body.setVelocity(0);
+        this.player.body.setVelocity(0);
 
         // Horizontal movement
-        if (cursors.left.isDown) {
-            player.body.setVelocityX(-speed);
-            player.rotation -= 0.1;
-        } else if (cursors.right.isDown) {
-            player.body.setVelocityX(speed);
-            player.rotation += 0.1;
+        if (this.cursors.left.isDown) {
+            this.player.body.setVelocityX(-speed);
+            this.player.rotation -= 0.1;
+        } else if (this.cursors.right.isDown) {
+            this.player.body.setVelocityX(speed);
+            this.player.rotation += 0.1;
         }
 
         // Vertical movement
-        if (cursors.up.isDown) {
-            player.body.setVelocityY(-speed);
-        } else if (cursors.down.isDown) {
-            player.body.setVelocityY(speed);
+        if (this.cursors.up.isDown) {
+            this.player.body.setVelocityY(-speed);
+        } else if (this.cursors.down.isDown) {
+            this.player.body.setVelocityY(speed);
+        }
+
+        if(this.A.isDown){
+            this.scene.start('main-menu')
         }
 
         // Normalize and scale the velocity so that player can't move faster along a diagonal
-        player.body.velocity.normalize().scale(speed);
+        this.player.body.velocity.normalize().scale(speed);
 
+    }
+    createPlayer(){
+        this.player = this.physics.add.sprite(250, 400, 'star')
+    }
+    createCursors(){
+        this.cursors = this.input.keyboard.createCursorKeys();
+        this.A = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
+        this.D = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
+        this.spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
     }
 }
 export default GameScene;
