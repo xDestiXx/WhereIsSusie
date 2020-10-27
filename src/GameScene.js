@@ -16,12 +16,7 @@ class GameScene extends Scene{
     create(){
         console.log('scena gry')
         //kod gry
-        const map = this.make.tilemap({ key: "map" });
-        const tileset = map.addTilesetImage("where-is-Susie", "tiles");
-        const belowLayer = map.createStaticLayer("Poniżej gracza", tileset, 0, 0);
-        const worldLayer = map.createStaticLayer("world", tileset, 0, 0);
-
-        worldLayer.setCollisionByProperty({ collides: true });
+        this.createMap();
         this.createPlayer();
         this.createCursors();
         this.timeConsole();
@@ -31,11 +26,11 @@ class GameScene extends Scene{
         //.setOffset(0, 24);
 
         // Watch the player and worldLayer for collisions, for the duration of the scene:
-        this.physics.add.collider(this.player, worldLayer);
+        this.physics.add.collider(this.player, this.worldLayer);
         this. cameras.main.roundPixels = true;
         const camera = this.cameras.main;
         camera.startFollow(this.player);
-        camera.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
+        camera.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels);
 
 
 
@@ -95,6 +90,14 @@ class GameScene extends Scene{
         // Normalize and scale the velocity so that player can't move faster along a diagonal
         this.player.body.velocity.normalize().scale(speed);
 
+    }
+    createMap(){
+        const map = this.make.tilemap({ key: "map" });
+        const tileset = map.addTilesetImage("where-is-Susie", "tiles");
+        const belowLayer = map.createStaticLayer("Poniżej gracza", tileset, 0, 0);
+        const worldLayer = map.createStaticLayer("world", tileset, 0, 0);
+
+        worldLayer.setCollisionByProperty({ collides: true });
     }
     createPlayer(){
         this.player = this.physics.add.sprite(250, 400, 'star')
