@@ -3,20 +3,22 @@ import { Scene } from 'phaser';
 class GameScene extends Scene{
     constructor() {
         super('game');
-        this.susiePos = {"coordinates":
-                [//x, y
-                    [32,160],
-                    [38,386],
-                    [322,148],
-                    [688,128],
-                    [580,308],
-                    [320,463],
-                    [240,709],
-                    [32,685],
-                    [120,506],
-                    [410,261]
-                ]
-            }
+        this.oldPosForSusie = null;
+        this.oldCoordForSusie = null;
+        // this.susiePos = {"coordinates":
+        //         [//x, y
+        //             [32,160],
+        //             [38,386],
+        //             [322,148],
+        //             [688,128],
+        //             [580,308],
+        //             [320,463],
+        //             [240,709],
+        //             [32,685],
+        //             [120,506],
+        //             [410,261]
+        //         ]
+        //     }
     }
 
 
@@ -27,6 +29,7 @@ class GameScene extends Scene{
 
     create(){
         console.log('scena gry')
+        this.susiePos = this.cache.json.get('coordData');
 //----Wywoływanie funkcji
         this.createMap();
         this.createPlayer();
@@ -34,14 +37,22 @@ class GameScene extends Scene{
         this.createCamera();
         this.physics.add.collider(this.player, this.worldLayer);
         this.positionForSusie();
-        this.timerPos = this.time.addEvent({ //timer od zmiany pozycji susie
-            delay: 3000,
-            callback: () => {
-                this.changePosForSusie();
+        this.time.addEvent({
+            delay:2000,
+            callback: () =>{
+                this.positionForSusie();
             },
-            loop: true,
-            paused: false
+            loop: false
         })
+
+        // this.timerPos = this.time.addEvent({ //timer od zmiany pozycji susie
+        //     delay: 3000,
+        //     callback: () => {
+        //         this.changePosForSusie();
+        //     },
+        //     loop: true,
+        //     paused: false
+        // })
 
 
         // player = this.physics.add
@@ -104,9 +115,10 @@ class GameScene extends Scene{
         }
 
         if(this.A.isDown){
-            this.scene.start('main-menu')
+            //this.scene.start('main-menu')
             //this.timee = 1000
             //console.log(this.player.body.position)
+            this.randomPosForSusie();
         }
 
         // Normalize and scale the velocity so that player can't move faster along a diagonal
@@ -146,13 +158,36 @@ class GameScene extends Scene{
         this.physics.add.collider(this.player, this.susie, this.susieWasFound, null, this)
     }
     randomPosForSusie(){
-        this.posForSusie = Math.floor(Math.random() * this.susiePos.coordinates.length);
-        console.log("Pozycja w tablicy: ", this.susiePos.coordinates[this.posForSusie]);
-        this.posforSusieX = this.susiePos.coordinates[this.posForSusie][0];
-        this.posforSusieY = this.susiePos.coordinates[this.posForSusie][1];
-        console.log("X: ", this.posforSusieX)
-        console.log("Y: ", this.posforSusieY)
-        console.log(this.susie)
+        console.log('OldPos susie na początku funkcji random pos', this.oldPosForSusie)
+        if(this.oldPosForSusie === null) // jeśli nie ma starej pozycji to losujemy obecną i przypisujemy ją dodatkowo do starej
+        {
+            this.posForSusie = Math.floor(Math.random() * this.susiePos.length);
+            console.log('posForSusie przed elsem',this.posForSusie)
+            this.oldPosForSusie = this.posForSusie
+        }else { // jeśli jest stara pozycja to losujemy nową dopóki będzie inna niż stara.
+            do {
+                this.posForSusie = Math.floor(Math.random() * this.susiePos.length);
+                console.log('pętla while', this.posForSusie)
+            }while (this.oldPosForSusie === this.posForSusie)
+            console.log('pozycja w tablicy: ', this.susiePos[this.posForSusie])
+        }
+        this.randomCoordForSusie()
+    }
+    randomCoordForSusie(){
+        console.log('OldCoord susie na początku funkcji random pos', this.oldCoordForSusie)
+        if(this.oldCoordForSusie === null) // jeśli nie ma starych koordów to losujemy obecne i przypisujemy je dodatkowo do starych
+        {
+            this.coordForSusie = Math.floor(Math.random() * this.susiePos[this.posForSusie].coordinates.length);
+            console.log('koordynaty wylosowane w danej sali: ',this.coordForSusie)
+            this.oldCoordForSusie = this.coordForSusie
+        }else { // jeśli jest stara pozycja to losujemy nową dopóki będzie inna niż stara.
+            do {
+                this.coordForSusie = Math.floor(Math.random() * this.susiePos[this.posForSusie].coordinates.length);
+                console.log('pętla while', this.coordForSusie)
+            }while (this.oldCoordForSusie === this.coordForSusie)
+            console.log('pozycja w tablicy: ', this.susiePos[this.posForSusie].coordinates[this.coordForSusie])
+            console.log('wchodzi else')
+        }
     }
     changePosForSusie(){
         this.randomPosForSusie()
