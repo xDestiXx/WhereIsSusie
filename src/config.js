@@ -3,6 +3,7 @@ import PreloadScene from './PreloadScene';
 import GameScene from "./GameScene";
 import MainMenu from "./MainMenu";
 import AboutScene from './AboutScene';
+import Introduction from "./Introduction";
 
 
 const config = {
@@ -22,7 +23,7 @@ const config = {
             debug: false
         }
     },
-    scene: [PreloadScene, MainMenu, GameScene, AboutScene],
+    scene: [PreloadScene, MainMenu, Introduction, GameScene, AboutScene],
 };
 
 export { config };

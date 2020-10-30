@@ -95,6 +95,9 @@ class GameScene extends Scene{
         this.player.body.velocity.normalize().scale(speed);
 
     }
+//
+//------ Funkcja tworząca mapę
+//
     createMap(){
         this.map = this.make.tilemap({ key: "map" });
         const tileset = this.map.addTilesetImage("where-is-Susie", "tiles");
