@@ -145,18 +145,14 @@ class GameScene extends Scene{
 //------ Funkcja losująca salę
 //
     randomRoomForSusie(){
-        console.log('OldPos susie na początku funkcji random pos', this.oldRoomForSusie)
         if(this.oldRoomForSusie === null) // jeśli nie ma starej pozycji to losujemy obecną i przypisujemy ją dodatkowo do starej
         {
             this.roomForSusie = Math.floor(Math.random() * this.roomsData.length);
-            console.log('posForSusie przed elsem',this.roomsData[this.roomForSusie])
             this.oldRoomForSusie = this.roomForSusie
         }else { // jeśli jest stara pozycja to losujemy nową dopóki będzie inna niż stara.
             do {
                 this.roomForSusie = Math.floor(Math.random() * this.roomsData.length);
-                console.log('pętla while', this.roomForSusie)
             }while (this.oldRoomForSusie === this.roomForSusie)
-            console.log('pozycja po elsie i do while: ', this.roomsData[this.roomForSusie])
         }
         this.randomCoordForSusie()
     }
@@ -164,19 +160,14 @@ class GameScene extends Scene{
 //------ Funkcja losująca koordynaty w sali
 //
     randomCoordForSusie(){
-        console.log('OldCoord susie na początku funkcji random pos', this.oldCoordForSusie)
         if(this.oldCoordForSusie === null) // jeśli nie ma starych koordów to losujemy obecne i przypisujemy je dodatkowo do starych
         {
             this.coordForSusie = Math.floor(Math.random() * this.roomsData[this.roomForSusie].coordinates.length);
-            console.log('koordynaty wylosowane w danej sali: ',this.roomsData[this.roomForSusie].coordinates[this.coordForSusie])
             this.oldCoordForSusie = this.coordForSusie
         }else { // jeśli jest stara pozycja to losujemy nową dopóki będzie inna niż stara.
-            console.log('wchodzi else')
             do {
                 this.coordForSusie = Math.floor(Math.random() * this.roomsData[this.roomForSusie].coordinates.length);
-                console.log('pętla while', this.coordForSusie)
             }while (this.oldCoordForSusie === this.coordForSusie)
-            console.log('pozycja w tablicy po do while: ', this.roomsData[this.roomForSusie].coordinates[this.coordForSusie])
         }
         this.susiePosX = this.roomsData[this.roomForSusie].coordinates[this.coordForSusie].x
         this.susiePosY = this.roomsData[this.roomForSusie].coordinates[this.coordForSusie].y
