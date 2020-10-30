@@ -3,69 +3,39 @@ import { Scene } from 'phaser';
 class GameScene extends Scene{
     constructor() {
         super('game');
-        this.oldPosForSusie = null;
+        this.oldRoomForSusie = null;
         this.oldCoordForSusie = null;
-        // this.susiePos = {"coordinates":
-        //         [//x, y
-        //             [32,160],
-        //             [38,386],
-        //             [322,148],
-        //             [688,128],
-        //             [580,308],
-        //             [320,463],
-        //             [240,709],
-        //             [32,685],
-        //             [120,506],
-        //             [410,261]
-        //         ]
-        //     }
     }
-
-
+//
+//------ Preload
+//
     preload(){
         this.load.image('menu', 'assets/star.png');
 
     }
-
+//
+//------ Create
+//
     create(){
         console.log('scena gry')
-        this.susiePos = this.cache.json.get('coordData');
-//----Wywoływanie funkcji
+        this.roomsData = this.cache.json.get('coordData'); // ładowanie całego JSONa do zmiennej
+//
+//------ Wywoływanie funkcji
+//
         this.createMap();
         this.createPlayer();
         this.createCursors();
         this.createCamera();
         this.physics.add.collider(this.player, this.worldLayer);
-        this.positionForSusie();
-        this.time.addEvent({
-            delay:2000,
-            callback: () =>{
-                this.positionForSusie();
+        this.createSusie();
+        this.timerPos = this.time.addEvent({ //timer od zmiany pozycji susie
+            delay: 3000,
+            callback: () => {
+                this.changeSusiePos();
             },
-            loop: false
+            loop: true,
+            paused: false
         })
-
-        // this.timerPos = this.time.addEvent({ //timer od zmiany pozycji susie
-        //     delay: 3000,
-        //     callback: () => {
-        //         this.changePosForSusie();
-        //     },
-        //     loop: true,
-        //     paused: false
-        // })
-
-
-        // player = this.physics.add
-        //     .sprite(250, 450, 'star')
-        //.setSize(32, 48)
-        //.setOffset(0, 24);
-
-        // Watch the player and worldLayer for collisions, for the duration of the scene:
-
-
-
-
-
         // // Help text that has a "fixed" position on the screen
         // this.add
         //     .text(16, 16, 'Arrow keys to move\nPress "D" to show hitboxes', {
@@ -118,7 +88,7 @@ class GameScene extends Scene{
             //this.scene.start('main-menu')
             //this.timee = 1000
             //console.log(this.player.body.position)
-            this.randomPosForSusie();
+            //this.randomPosForSusie();
         }
 
         // Normalize and scale the velocity so that player can't move faster along a diagonal
@@ -136,63 +106,85 @@ class GameScene extends Scene{
        // this.physics.add.collider(this.player, this.worldLayer);
 
     }
+//
+//------ Funkcja tworząca gracza
+//
     createPlayer(){
         this.player = this.physics.add.sprite(250, 400, 'star')
     }
+//
+//------ Funkcja tworząca kamerę śledzącą gracza
+//
     createCamera(){
         this.cameras.main.roundPixels = true;
         const camera = this.cameras.main;
         camera.startFollow(this.player);
         camera.setBounds(0,0, this.map.widthInPixels, this.map.heightInPixels);
     }
+//
+//------ Funkcja tworząca kursory i dodatkowe klawisze
+//
     createCursors(){
         this.cursors = this.input.keyboard.createCursorKeys();
+        this.W = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
+        this.S = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
         this.A = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
         this.D = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
         this.spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
     }
-    positionForSusie(){
-        this.randomPosForSusie()
+//
+//------ Funkcja tworząca Susie
+//
+    createSusie(){
+        this.randomRoomForSusie()
 
-        this.susie = this.physics.add.sprite(this.posforSusieX, this.posforSusieY, 'susie')
+        this.susie = this.physics.add.sprite(this.susiePosX, this.susiePosY, 'susie')
         this.physics.add.collider(this.player, this.susie, this.susieWasFound, null, this)
     }
-    randomPosForSusie(){
-        console.log('OldPos susie na początku funkcji random pos', this.oldPosForSusie)
-        if(this.oldPosForSusie === null) // jeśli nie ma starej pozycji to losujemy obecną i przypisujemy ją dodatkowo do starej
+//
+//------ Funkcja losująca salę
+//
+    randomRoomForSusie(){
+        console.log('OldPos susie na początku funkcji random pos', this.oldRoomForSusie)
+        if(this.oldRoomForSusie === null) // jeśli nie ma starej pozycji to losujemy obecną i przypisujemy ją dodatkowo do starej
         {
-            this.posForSusie = Math.floor(Math.random() * this.susiePos.length);
-            console.log('posForSusie przed elsem',this.posForSusie)
-            this.oldPosForSusie = this.posForSusie
+            this.roomForSusie = Math.floor(Math.random() * this.roomsData.length);
+            console.log('posForSusie przed elsem',this.roomsData[this.roomForSusie])
+            this.oldRoomForSusie = this.roomForSusie
         }else { // jeśli jest stara pozycja to losujemy nową dopóki będzie inna niż stara.
             do {
-                this.posForSusie = Math.floor(Math.random() * this.susiePos.length);
-                console.log('pętla while', this.posForSusie)
-            }while (this.oldPosForSusie === this.posForSusie)
-            console.log('pozycja w tablicy: ', this.susiePos[this.posForSusie])
+                this.roomForSusie = Math.floor(Math.random() * this.roomsData.length);
+                console.log('pętla while', this.roomForSusie)
+            }while (this.oldRoomForSusie === this.roomForSusie)
+            console.log('pozycja po elsie i do while: ', this.roomsData[this.roomForSusie])
         }
         this.randomCoordForSusie()
     }
+//
+//------ Funkcja losująca koordynaty w sali
+//
     randomCoordForSusie(){
         console.log('OldCoord susie na początku funkcji random pos', this.oldCoordForSusie)
         if(this.oldCoordForSusie === null) // jeśli nie ma starych koordów to losujemy obecne i przypisujemy je dodatkowo do starych
         {
-            this.coordForSusie = Math.floor(Math.random() * this.susiePos[this.posForSusie].coordinates.length);
-            console.log('koordynaty wylosowane w danej sali: ',this.coordForSusie)
+            this.coordForSusie = Math.floor(Math.random() * this.roomsData[this.roomForSusie].coordinates.length);
+            console.log('koordynaty wylosowane w danej sali: ',this.roomsData[this.roomForSusie].coordinates[this.coordForSusie])
             this.oldCoordForSusie = this.coordForSusie
         }else { // jeśli jest stara pozycja to losujemy nową dopóki będzie inna niż stara.
+            console.log('wchodzi else')
             do {
-                this.coordForSusie = Math.floor(Math.random() * this.susiePos[this.posForSusie].coordinates.length);
+                this.coordForSusie = Math.floor(Math.random() * this.roomsData[this.roomForSusie].coordinates.length);
                 console.log('pętla while', this.coordForSusie)
             }while (this.oldCoordForSusie === this.coordForSusie)
-            console.log('pozycja w tablicy: ', this.susiePos[this.posForSusie].coordinates[this.coordForSusie])
-            console.log('wchodzi else')
+            console.log('pozycja w tablicy po do while: ', this.roomsData[this.roomForSusie].coordinates[this.coordForSusie])
         }
+        this.susiePosX = this.roomsData[this.roomForSusie].coordinates[this.coordForSusie].x
+        this.susiePosY = this.roomsData[this.roomForSusie].coordinates[this.coordForSusie].y
     }
-    changePosForSusie(){
-        this.randomPosForSusie()
-        this.susie.setPosition(this.posforSusieX, this.posforSusieY)
-        console.log(this.posforSusieX, this.posforSusieY)
+    changeSusiePos(){
+        this.randomRoomForSusie()
+        this.susie.setPosition(this.susiePosX, this.susiePosY)
+        console.log(this.susiePosX, this.susiePosY)
     }
     susieWasFound(){
         console.log('susie was found')
