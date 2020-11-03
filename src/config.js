@@ -4,7 +4,7 @@ import GameScene from "./GameScene";
 import MainMenu from "./MainMenu";
 import AboutScene from './AboutScene';
 import Introduction from "./Introduction";
-
+import UIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin'
 
 const config = {
     type: Phaser.AUTO,
@@ -24,6 +24,13 @@ const config = {
         }
     },
     scene: [PreloadScene, MainMenu, Introduction, GameScene, AboutScene],
+    plugins: {
+        scene: [{
+            key: 'rexUI',
+            plugin: UIPlugin,
+            mapping: 'rexUI'
+        }]
+    }
 };
 
 export { config };
