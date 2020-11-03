@@ -1,5 +1,5 @@
 import { Scene } from 'phaser';
-import { TextBox } from 'phaser3-rex-plugins/templates/ui/ui-components.js';
+
 
 class Introduction extends Scene{
     constructor() {
@@ -13,33 +13,33 @@ class Introduction extends Scene{
     preload(){
         this.load.image('nextPage', 'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/assets/images/arrow-down-left.png');
         this.GetValue = Phaser.Utils.Objects.GetValue;
+        scene.load.scenePlugin('rexuiplugin', 'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexuiplugin.min.js', 'rexUI', 'rexUI');
     }
     create() {
         //this.introduction()
-        this.createTextBox(100, 100, {
+        this.createTextBox(this, 100, 100, {
             wrapWidth: 500,
         })
             .start(this.content, 50);
 
     }
-    createTextBox(x, y, config) {
+    createTextBox(scene, x, y, config) {
         var wrapWidth = this.GetValue(config, 'wrapWidth', 0);
         var fixedWidth = this.GetValue(config, 'fixedWidth', 0);
         var fixedHeight = this.GetValue(config, 'fixedHeight', 0);
-        var textBox = new TextBox({
+        var textBox = this.rexUI.add.textBox({
             x: x,
             y: y,
 
+            background: this.scene.rexUI.add.roundRectangle(0, 0, 2, 2, 20, this.COLOR_PRIMARY)
+                .setStrokeStyle(2, this.COLOR_LIGHT),
 
-            // background: this.scene.rexUI.add.roundRectangle(0, 0, 2, 2, 20, this.COLOR_PRIMARY)
-            //     .setStrokeStyle(2, this.COLOR_LIGHT),
-
-           // icon: this.scene.rexUI.add.roundRectangle(0, 0, 2, 2, 20, this.COLOR_DARK),
+            icon: this.scene.rexUI.add.roundRectangle(0, 0, 2, 2, 20, this.COLOR_DARK),
 
             // text: getBuiltInText(scene, wrapWidth, fixedWidth, fixedHeight),
-            text: this.getBBcodeText(wrapWidth, fixedWidth, fixedHeight),
+            text: this.getBBcodeText(scene, wrapWidth, fixedWidth, fixedHeight),
 
-            action: this.add.image(0, 0, 'nextPage').setTint(this.COLOR_LIGHT).setVisible(false),
+            action: this.scene.add.image(0, 0, 'nextPage').setTint(this.COLOR_LIGHT).setVisible(false),
 
             space: {
                 left: 20,
@@ -87,8 +87,8 @@ class Introduction extends Scene{
         return textBox;
     }
 
-    getBBcodeText(wrapWidth, fixedWidth, fixedHeight) {
-        return rexUI.add.BBCodeText(0, 0, '', {
+    getBBcodeText(scene, wrapWidth, fixedWidth, fixedHeight) {
+        return this.scene.rexUI.add.BBCodeText(0, 0, '', {
             fixedWidth: fixedWidth,
             fixedHeight: fixedHeight,
 

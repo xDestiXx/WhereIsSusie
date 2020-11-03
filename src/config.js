@@ -4,6 +4,7 @@ import GameScene from "./GameScene";
 import MainMenu from "./MainMenu";
 import AboutScene from './AboutScene';
 import Introduction from "./Introduction";
+import Test from "./Test";
 import UIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin'
 
 const config = {
@@ -23,7 +24,7 @@ const config = {
             debug: false
         }
     },
-    scene: [PreloadScene, MainMenu, Introduction, GameScene, AboutScene],
+    scene: [PreloadScene, MainMenu, Introduction,Test , GameScene, AboutScene],
     plugins: {
         scene: [{
             key: 'rexUI',

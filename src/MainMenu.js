@@ -35,7 +35,7 @@ class MainMenu extends Scene{
 
 //----start sceny gry
         buttonStartGame.on('pointerdown', () => {
-            this.scene.start('intro')
+            this.scene.start('test')
         })
 //----About
         buttonAbout.on('pointerdown', () =>{
