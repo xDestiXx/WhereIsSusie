@@ -1,12 +1,11 @@
 import { Scene } from 'phaser';
-import UIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin';
-import { TextBox } from 'phaser3-rex-plugins/templates/ui/ui-components.js';
 
-const COLOR_PRIMARY = 0x4e342e;
-const COLOR_LIGHT = 0x7b5e57;
-const COLOR_DARK = 0x260e04;
+const BG_COLOR = 0x260e04;
+const FRAME_COLOR = 0x915F08;
+const DOT_COLOR = 0x4A2513;
+let endText = false;
 
-var content = `Phaser is a fast, free, and fun open source HTML5 game framework that offers WebGL and Canvas rendering across desktop and mobile web browsers. Games can be compiled to iOS, Android and native apps by using 3rd party tools. You can use JavaScript or TypeScript for development.`;
+let content = `Za 5 minut zaczynasz zajęcia, na które potrzebujesz symulator. Niestety Susie stwierdziła, że to dobry czas na zabawę w chowanego. Musisz jak najszybciej ją odnaleźć aby zajęcia mogły się odbyć o czasie. Powodzenia!`;
 
 class Test extends Scene {
     constructor() {
@@ -16,44 +15,44 @@ class Test extends Scene {
     }
 
     preload() {
-        this.load.image('nextPage', 'assets/images/arrow-down-left.png');
+        this.load.image('nextPage', 'assets/arrow-down-left.png');
     }
 
     create() {
         createTextBox(this, 100, 100, {
             wrapWidth: 500,
         })
-            .start(content, 50);
-
-        createTextBox(this, 100, 400, {
-            wrapWidth: 500,
-            fixedWidth: 500,
-            fixedHeight: 65,
-        })
-            .start(content, 50);
+            .start(content, 50)
+        this.addButton(100,100,'tekstsss', 100, 100)
+    }
+    addButton(x,y,string,fixedWidth,fixedHeight){
+        let buttonStartGame = this.add.text(x, y, string, {
+            fixedWidth: fixedWidth,
+            fixedHeight: fixedHeight,
+            backgroundColor: "#ffffff"
+        }).setInteractive().setScale(0.5)
     }
 
 }
 
 
 const GetValue = Phaser.Utils.Objects.GetValue;
-var createTextBox = function (scene, x, y, config) {
-    var wrapWidth = GetValue(config, 'wrapWidth', 0);
-    var fixedWidth = GetValue(config, 'fixedWidth', 0);
-    var fixedHeight = GetValue(config, 'fixedHeight', 0);
-    var textBox = scene.rexUI.add.textBox({
+let createTextBox = function (scene, x, y, config) {
+    let wrapWidth = GetValue(config, 'wrapWidth', 0);
+    let fixedWidth = GetValue(config, 'fixedWidth', 0);
+    let fixedHeight = GetValue(config, 'fixedHeight', 0);
+    let textBox = scene.rexUI.add.textBox({
         x: x,
         y: y,
 
-        background: scene.rexUI.add.roundRectangle(0, 0, 2, 2, 20, COLOR_PRIMARY)
-            .setStrokeStyle(2, COLOR_LIGHT),
+        background: scene.rexUI.add.roundRectangle(0, 0, 2, 2, 15, BG_COLOR)
+            .setStrokeStyle(2, FRAME_COLOR),
 
-        icon: scene.rexUI.add.roundRectangle(0, 0, 2, 2, 20, COLOR_DARK),
+        icon: scene.rexUI.add.roundRectangle(0, 0, 2, 2, 10, DOT_COLOR), // ikonka
 
-        // text: getBuiltInText(scene, wrapWidth, fixedWidth, fixedHeight),
-        text: getBBcodeText(scene, wrapWidth, fixedWidth, fixedHeight),
+        text: getBuiltInText(scene, wrapWidth, fixedWidth, fixedHeight),
 
-        action: scene.add.image(0, 0, 'nextPage').setTint(COLOR_LIGHT).setVisible(false),
+       // action: scene.add.image(0, 0, 'nextPage').setTint(DOT_COLOR).setVisible(false),
 
         space: {
             left: 20,
@@ -70,8 +69,8 @@ var createTextBox = function (scene, x, y, config) {
     textBox
         .setInteractive()
         .on('pointerdown', function () {
-            var icon = this.getElement('action').setVisible(false);
-            this.resetChildVisibleState(icon);
+            //let icon = this.getElement('action').setVisible(false);
+            //this.resetChildVisibleState(icon);
             if (this.isTyping) {
                 this.stop(true);
             } else {
@@ -80,51 +79,22 @@ var createTextBox = function (scene, x, y, config) {
         }, textBox)
         .on('pageend', function () {
             if (this.isLastPage) {
-                return;
+                return //start new scene here
+                scene.scene.start('game')
             }
-
-            var icon = this.getElement('action').setVisible(true);
-            this.resetChildVisibleState(icon);
-            icon.y -= 30;
-            var tween = scene.tweens.add({
-                targets: icon,
-                y: '+=30', // '+=100'
-                ease: 'Bounce', // 'Cubic', 'Elastic', 'Bounce', 'Back'
-                duration: 500,
-                repeat: 0, // -1: infinity
-                yoyo: false
-            });
         }, textBox)
-    //.on('type', function () {
-    //})
-
     return textBox;
 }
 
-var getBuiltInText = function (scene, wrapWidth, fixedWidth, fixedHeight) {
+let getBuiltInText = function (scene, wrapWidth, fixedWidth, fixedHeight) {
     return scene.add.text(0, 0, '', {
         fontSize: '20px',
         wordWrap: {
             width: wrapWidth
         },
-        maxLines: 3
+        maxLines: 6
     })
         .setFixedSize(fixedWidth, fixedHeight);
 }
-
-var getBBcodeText = function (scene, wrapWidth, fixedWidth, fixedHeight) {
-    return scene.rexUI.add.BBCodeText(0, 0, '', {
-        fixedWidth: fixedWidth,
-        fixedHeight: fixedHeight,
-
-        fontSize: '20px',
-        wrap: {
-            mode: 'word',
-            width: wrapWidth
-        },
-        maxLines: 3
-    })
-}
-
 
 export default Test
