@@ -17,20 +17,20 @@ class MainMenu extends Scene{
 
         let buttonStartGame = this.add.image(400, 300, 'play-button').setInteractive().setScale(0.5);
         let buttonAbout = this.add.image(400, 340, 'about-button').setInteractive().setScale(0.5)
-        buttonStartGame.alpha = 0.7
-        buttonAbout.alpha = 0.7
 
         buttonStartGame.on('pointerover', () =>{
             buttonStartGame.alpha = 1
+            buttonAbout.alpha = 0.7
         })
 
         buttonAbout.on('pointerover', () =>{
             buttonAbout.alpha = 1
+            buttonStartGame.alpha = 0.7
         });
 
         this.input.on('pointerout', () => {
-            buttonStartGame.alpha = 0.7;
-            buttonAbout.alpha = 0.7
+            buttonStartGame.alpha = 1;
+            buttonAbout.alpha = 1;
         })
 
 //----start sceny gry

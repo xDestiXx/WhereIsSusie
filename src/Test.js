@@ -19,23 +19,51 @@ class Test extends Scene {
     }
 
     create() {
-        createTextBox(this, 100, 100, {
+        this.screenCenterX = this.cameras.main.worldView.x + this.cameras.main.width / 2;
+        this.add.image(0,0, 'sky').setOrigin(0,0)
+        createTextBox(this, this.screenCenterX - 270, 200, { // 270 bo space ustawione na 20 left i 20 right 540/2
             wrapWidth: 500,
         })
             .start(content, 50)
-        this.addButton(100,100,'tekstsss', 100, 100)
+
+        // Dodanie przycisku po 2 sekundach
+        this.time.addEvent({
+            delay: 2000,
+            callback: () => {
+                this.addButton(500, 'Kontynuuj...', 150, 5, 10, "#260E04")
+            }
+        })
+
     }
-    addButton(x,y,string,fixedWidth,fixedHeight){
-        let buttonStartGame = this.add.text(x, y, string, {
+
+//
+//------ Funkcja tworząca przycisk
+//
+    addButton(y,string,fixedWidth,paddingX, paddingY, backgroundColor){
+        let buttonStartGame = this.add.text(this.screenCenterX-75, y, string, {
             fixedWidth: fixedWidth,
-            fixedHeight: fixedHeight,
-            backgroundColor: "#ffffff"
-        }).setInteractive().setScale(0.5)
+            backgroundColor: backgroundColor,
+            padding: { x: paddingX, y: paddingY },
+            align: "center",
+        }).setInteractive()
+
+        buttonStartGame.on('pointerover', () => {
+            buttonStartGame.setBackgroundColor('#5F2614')
+        })
+        buttonStartGame.on('pointerout', () => {
+            buttonStartGame.setBackgroundColor('#260E04')
+        })
+        buttonStartGame.on('pointerdown', () => {
+            this.scene.start('game')
+        })
+
     }
 
 }
 
-
+//
+//------ Tworzenie textboxa
+//
 const GetValue = Phaser.Utils.Objects.GetValue;
 let createTextBox = function (scene, x, y, config) {
     let wrapWidth = GetValue(config, 'wrapWidth', 0);

@@ -8,6 +8,7 @@ class PreloadScene extends Scene {
         this.load.image('logo', 'assets/logo.png');
         this.load.image('play-button', 'assets/play.png');
         this.load.image('about-button', 'assets/about.png');
+        this.load.image('sky', 'assets/sky.png');
         //ładowanie assetów gry
         this.load.image('textFrame', 'assets/TextFrame.png');
         this.load.image('susie', 'assets/bomb.png');

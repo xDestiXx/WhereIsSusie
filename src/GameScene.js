@@ -87,7 +87,7 @@ class GameScene extends Scene{
         if(this.A.isDown){
             //this.scene.start('main-menu')
             //this.timee = 1000
-            //console.log(this.player.body.position)
+            console.log(this.player.body.position)
             //this.randomPosForSusie();
         }
 
