@@ -194,6 +194,9 @@ class GameScene extends Scene{
         this.winText();
         this.timerPos.paused = true
     }
+//
+//------ Funkcja wyświetlająca tekst po odnalezieniu Susie
+//
     winText(){
         let winText = this.add.text(100, 200, "You found Susie!\n Great job! \n\n\n Press 'A' if you want play again",{
             font: "24px monospace",
@@ -206,18 +209,9 @@ class GameScene extends Scene{
         })
             .setScrollFactor(0, 0)
             .setDepth(30);
-        // let winText = this.add
-        //     .text(200, 16, 'Arrow keys to move\nPress "D" to show hitboxes', {
-        //         font: "18px monospace",
-        //         fill: "#000000",
-        //         padding: { x: 20, y: 10 },
-        //         backgroundColor: "#ffffff"
-        //     })
-        //     .setScrollFactor(0)
-        //     .setDepth(30);
     }
 //
-//------ Funkcja dodająca numer sali
+//------ Funkcja dodająca numer sali na podstawie danych z pliku 'roomNumbers.json'
 //
     roomNumbers(){
         for(let i=0; i < this.roomsNumbers.length; i++){
