@@ -19,6 +19,7 @@ class GameScene extends Scene{
     create(){
         console.log('scena gry')
         this.roomsData = this.cache.json.get('coordData'); // ładowanie całego JSONa do zmiennej
+        this.roomsNumbers = this.cache.json.get('roomNumbers') //
 //
 //------ Wywoływanie funkcji
 //
@@ -36,8 +37,9 @@ class GameScene extends Scene{
             loop: true,
             paused: false
         });
+
         //TODO: Stworzyć jsona z koordynatami tabliczki i numerem sali żeby dodać fora który nada wszystkie numerki
-        this.roomNumber(510, 789, '215')
+        this.roomNumbers()
         // // Help text that has a "fixed" position on the screen
         // this.add
         //     .text(16, 16, 'Arrow keys to move\nPress "D" to show hitboxes', {
@@ -217,12 +219,18 @@ class GameScene extends Scene{
 //
 //------ Funkcja dodająca numer sali
 //
-    roomNumber(x,y,number){
-        let rooomNumber = this.add.text(x,y, number, {
-            font: "18px monospace",
-            backgroundColor: "#6B6E6E" // dodać kiedyś grafikę tabliczki
-        })
-
+    roomNumbers(){
+        for(let i=0; i < this.roomsNumbers.length; i++){
+            let rooms = this.add.text(this.roomsNumbers[i].tableCoord.x, this.roomsNumbers[i].tableCoord.y, this.roomsNumbers[i].salaID,{
+                font: "18px monospace",
+                backgroundColor: "#6B6E6E"
+            })
+        }
+        // let rooomNumber = this.add.text(x,y, number, {
+        //     font: "18px monospace",
+        //     backgroundColor: "#6B6E6E" // dodać kiedyś grafikę tabliczki
+        // })
+//
     }
     timeConsole(){
         this.time.addEvent({

@@ -16,6 +16,7 @@ class PreloadScene extends Scene {
         this.load.image('star','assets/star.png');
         this.load.tilemapTiledJSON('map', 'JSON/mapaCSM.json');
         this.load.json('coordData', 'JSON/coordinates.json');
+        this.load.json('roomNumbers', 'JSON/roomNumbers.json');
         this.load.spritesheet('dude',
             'assets/dude.png',
             { frameWidth: 24, frameHeight: 22 }
