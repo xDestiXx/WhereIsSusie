@@ -35,7 +35,9 @@ class GameScene extends Scene{
             },
             loop: true,
             paused: false
-        })
+        });
+        //TODO: Stworzyć jsona z koordynatami tabliczki i numerem sali żeby dodać fora który nada wszystkie numerki
+        this.roomNumber(510, 789, '215')
         // // Help text that has a "fixed" position on the screen
         // this.add
         //     .text(16, 16, 'Arrow keys to move\nPress "D" to show hitboxes', {
@@ -156,7 +158,9 @@ class GameScene extends Scene{
             do {
                 this.roomForSusie = Math.floor(Math.random() * this.roomsData.length);
             }while (this.oldRoomForSusie === this.roomForSusie)
+            this.oldRoomForSusie = this.roomForSusie
         }
+        console.log(this.roomForSusie)
         this.randomCoordForSusie()
     }
 //
@@ -171,6 +175,7 @@ class GameScene extends Scene{
             do {
                 this.coordForSusie = Math.floor(Math.random() * this.roomsData[this.roomForSusie].coordinates.length);
             }while (this.oldCoordForSusie === this.coordForSusie)
+            this.oldCoordForSusie = this.coordForSusie
         }
         this.susiePosX = this.roomsData[this.roomForSusie].coordinates[this.coordForSusie].x
         this.susiePosY = this.roomsData[this.roomForSusie].coordinates[this.coordForSusie].y
@@ -179,6 +184,7 @@ class GameScene extends Scene{
         this.randomRoomForSusie()
         this.susie.setPosition(this.susiePosX, this.susiePosY)
         console.log(this.susiePosX, this.susiePosY)
+        console.log('nowy room',this.roomForSusie,'stary room', this.oldRoomForSusie)
     }
     susieWasFound(){
         console.log('susie was found')
@@ -207,6 +213,16 @@ class GameScene extends Scene{
         //     })
         //     .setScrollFactor(0)
         //     .setDepth(30);
+    }
+//
+//------ Funkcja dodająca numer sali
+//
+    roomNumber(x,y,number){
+        let rooomNumber = this.add.text(x,y, number, {
+            font: "18px monospace",
+            backgroundColor: "#6B6E6E" // dodać kiedyś grafikę tabliczki
+        })
+
     }
     timeConsole(){
         this.time.addEvent({
