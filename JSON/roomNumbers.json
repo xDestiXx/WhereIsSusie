@@ -1,20 +1,26 @@
 [
   {
-    "salaID": 216,
+    "salaID": "215",
     "tableCoord": {
-      "x": 490, "y": 788
+      "x": 676, "y": 784
     }
   },
   {
-    "salaID": 217,
+    "salaID": "216",
     "tableCoord": {
-      "x": 1301, "y": 788
+      "x": 1444, "y": 788
     }
   },
   {
-    "salaID": 218,
+    "salaID": "216a",
     "tableCoord": {
-      "x": 1000, "y": 788
+      "x": 2212, "y": 788
+    }
+  },
+  {
+    "salaID": "212a",
+    "tableCoord": {
+      "x": 1444, "y": 1008
     }
   }
 ]

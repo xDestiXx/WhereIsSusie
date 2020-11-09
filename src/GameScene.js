@@ -5,6 +5,7 @@ class GameScene extends Scene{
         super('game');
         this.oldRoomForSusie = null;
         this.oldCoordForSusie = null;
+        this.playerRot = false;
     }
 //
 //------ Preload
@@ -38,7 +39,7 @@ class GameScene extends Scene{
             paused: false
         });
 
-        //TODO: Stworzyć jsona z koordynatami tabliczki i numerem sali żeby dodać fora który nada wszystkie numerki
+        //TODO: dodać do jsona info czy obrócony czy nie
         this.roomNumbers()
         // // Help text that has a "fixed" position on the screen
         // this.add
@@ -84,8 +85,17 @@ class GameScene extends Scene{
         // Vertical movement
         if (this.cursors.up.isDown) {
             this.player.body.setVelocityY(-speed);
+            if(this.player.body.position.y <= 900 && this.playerRot === true){
+                this.player.angle = 0
+                this.playerRot = false;
+            }
+
         } else if (this.cursors.down.isDown) {
             this.player.body.setVelocityY(speed);
+            if(this.player.body.position.y > 900 && this.playerRot === false){
+                this.player.angle = 180
+                this.playerRot = true;
+            }
         }
 
         if(this.A.isDown){
@@ -220,12 +230,10 @@ class GameScene extends Scene{
                 backgroundColor: "#6B6E6E"
             })
         }
-        // let rooomNumber = this.add.text(x,y, number, {
-        //     font: "18px monospace",
-        //     backgroundColor: "#6B6E6E" // dodać kiedyś grafikę tabliczki
-        // })
-//
     }
+//
+//------ Funkcja
+//
     timeConsole(){
         this.time.addEvent({
             delay: 1000,

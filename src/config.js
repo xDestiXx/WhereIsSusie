@@ -8,11 +8,11 @@ import Test from "./Test";
 import UIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin'
 
 const config = {
-    type: Phaser.AUTO,
+    type: Phaser.CANVAS,
     parent: 'phaser-example',
     width: 800,
     height: 600,
-    pixelArt: false,
+    pixelArt: true,
     scale: {
         mode: Phaser.Scale.FIT,
         autoCenter: Phaser.Scale.CENTER_BOTH,
