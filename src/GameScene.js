@@ -41,30 +41,7 @@ class GameScene extends Scene{
 
         //TODO: dodać do jsona info czy obrócony czy nie
         this.roomNumbers()
-        // // Help text that has a "fixed" position on the screen
-        // this.add
-        //     .text(16, 16, 'Arrow keys to move\nPress "D" to show hitboxes', {
-        //         font: "18px monospace",
-        //         fill: "#000000",
-        //         padding: { x: 20, y: 10 },
-        //         backgroundColor: "#ffffff"
-        //     })
-        //     .setScrollFactor(0)
-        //     .setDepth(20);
 
-        // Debug graphics
-        // this.input.keyboard.once("keydown_D", (event) => {
-        //     // Turn on physics debugging to show player's hitbox
-        //     this.physics.world.createDebugGraphic();
-        //
-        //     // Create worldLayer collision graphic above the player, but below the help text
-        //     const graphics = this.add.graphics().setAlpha(0.75).setDepth(10);
-        //     worldLayer.renderDebug(graphics, {
-        //         tileColor: null, // Color of non-colliding tiles
-        //         collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255), // Color of colliding tiles
-        //         faceColor: new Phaser.Display.Color(40, 39, 37, 255) // Color of colliding face edges
-        //     });
-        // });
     }
     update(time, delta) {
         const speed = 175;
@@ -101,13 +78,12 @@ class GameScene extends Scene{
         if(this.A.isDown){
             //this.scene.start('main-menu')
             //this.timee = 1000
-            console.log(this.player.body.position)
+            console.log(this.player.x)
             //this.randomPosForSusie();
         }
 
         // Normalize and scale the velocity so that player can't move faster along a diagonal
         this.player.body.velocity.normalize().scale(speed);
-
     }
 //
 //------ Funkcja tworząca mapę
@@ -115,9 +91,9 @@ class GameScene extends Scene{
     createMap(){
         this.map = this.make.tilemap({ key: "map" });
         const tileset = this.map.addTilesetImage("where-is-Susie", "tiles");
-        const belowLayer = this.map.createStaticLayer("BelowPlayer", tileset, 0, 0);
-        this.worldLayer = this.map.createStaticLayer("World", tileset, 0, 0);
-        const aboveLayer = this.map.createStaticLayer("AbovePlayer", tileset, 0, 0);
+        const belowLayer = this.map.createStaticLayer("BelowPlayer", tileset, 0, 0)
+        this.worldLayer = this.map.createStaticLayer("World", tileset, 0, 0)
+        const aboveLayer = this.map.createStaticLayer("AbovePlayer", tileset, 0, 0)
         aboveLayer.setDepth(10);
         this.worldLayer.setCollisionByProperty({ collides: true });
        // this.physics.add.collider(this.player, this.worldLayer);

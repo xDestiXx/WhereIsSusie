@@ -28,12 +28,11 @@ class Test extends Scene {
 
         // Dodanie przycisku po 2 sekundach
         this.time.addEvent({
-            delay: 2000,
+            delay: 1000,
             callback: () => {
                 this.addButton(500, 'Kontynuuj...', 150, 5, 10, "#260E04")
             }
         })
-
     }
 
 //

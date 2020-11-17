@@ -1,136 +1,114 @@
 import { Scene } from 'phaser';
 
+const BG_COLOR = 0x260e04;
+const FRAME_COLOR = 0x915F08;
+const DOT_COLOR = 0x4A2513;
+let content = `Za 5 minut zaczynasz zajęcia, na które potrzebujesz symulator. Niestety Susie stwierdziła, że to dobry czas na zabawę w chowanego. Musisz jak najszybciej ją odnaleźć aby zajęcia mogły się odbyć o czasie. Powodzenia!`;
+
 
 class Introduction extends Scene{
     constructor() {
         super('intro');
-        this.content = `Phaser is a fast, free, and fun open source HTML5 game framework that offers WebGL and Canvas rendering across desktop and mobile web browsers. Games can be compiled to iOS, Android and native apps by using 3rd party tools. You can use JavaScript or TypeScript for development.`;
-        this.COLOR_PRIMARY = 0x4e342e;
-        this.COLOR_LIGHT = 0x7b5e57;
-        this.COLOR_DARK = 0x260e04;
     }
 
     preload(){
-        this.load.image('nextPage', 'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/assets/images/arrow-down-left.png');
-        this.GetValue = Phaser.Utils.Objects.GetValue;
-        scene.load.scenePlugin('rexuiplugin', 'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexuiplugin.min.js', 'rexUI', 'rexUI');
     }
+
     create() {
-        //this.introduction()
-        this.createTextBox(this, 100, 100, {
+        this.screenCenterX = this.cameras.main.worldView.x + this.cameras.main.width / 2;
+        this.add.image(0,0, 'sky').setOrigin(0,0)
+        createTextBox(this, this.screenCenterX - 270, 200, { // 270 bo space ustawione na 20 left i 20 right 540/2
             wrapWidth: 500,
         })
-            .start(this.content, 50);
+            .start(content, 50)
 
-    }
-    createTextBox(scene, x, y, config) {
-        var wrapWidth = this.GetValue(config, 'wrapWidth', 0);
-        var fixedWidth = this.GetValue(config, 'fixedWidth', 0);
-        var fixedHeight = this.GetValue(config, 'fixedHeight', 0);
-        var textBox = this.rexUI.add.textBox({
-            x: x,
-            y: y,
-
-            background: this.scene.rexUI.add.roundRectangle(0, 0, 2, 2, 20, this.COLOR_PRIMARY)
-                .setStrokeStyle(2, this.COLOR_LIGHT),
-
-            icon: this.scene.rexUI.add.roundRectangle(0, 0, 2, 2, 20, this.COLOR_DARK),
-
-            // text: getBuiltInText(scene, wrapWidth, fixedWidth, fixedHeight),
-            text: this.getBBcodeText(scene, wrapWidth, fixedWidth, fixedHeight),
-
-            action: this.scene.add.image(0, 0, 'nextPage').setTint(this.COLOR_LIGHT).setVisible(false),
-
-            space: {
-                left: 20,
-                right: 20,
-                top: 20,
-                bottom: 20,
-                icon: 10,
-                text: 10,
+        // Dodanie przycisku po 2 sekundach
+        this.time.addEvent({
+            delay: 1000,
+            callback: () => {
+                this.addButton(500, 'Kontynuuj...', 150, 5, 10, "#260E04")
             }
         })
-            .setOrigin(0)
-            .layout();
-
-        textBox
-            .setInteractive()
-            .on('pointerdown', function () {
-                var icon = this.getElement('action').setVisible(false);
-                this.resetChildVisibleState(icon);
-                if (this.isTyping) {
-                    this.stop(true);
-                } else {
-                    this.typeNextPage();
-                }
-            }, textBox)
-            .on('pageend', function () {
-                if (this.isLastPage) {
-                    return;
-                }
-
-                var icon = this.getElement('action').setVisible(true);
-                this.resetChildVisibleState(icon);
-                icon.y -= 30;
-                var tween = scene.tweens.add({
-                    targets: icon,
-                    y: '+=30', // '+=100'
-                    ease: 'Bounce', // 'Cubic', 'Elastic', 'Bounce', 'Back'
-                    duration: 500,
-                    repeat: 0, // -1: infinity
-                    yoyo: false
-                });
-            }, textBox)
-        //.on('type', function () {
-        //})
-
-        return textBox;
     }
-
-    getBBcodeText(scene, wrapWidth, fixedWidth, fixedHeight) {
-        return this.scene.rexUI.add.BBCodeText(0, 0, '', {
+//
+//------ Funkcja tworząca przycisk
+//
+    addButton(y,string,fixedWidth,paddingX, paddingY, backgroundColor){
+        let buttonStartGame = this.add.text(this.screenCenterX-75, y, string, {
             fixedWidth: fixedWidth,
-            fixedHeight: fixedHeight,
-
-            fontSize: '20px',
-            wrap: {
-                mode: 'word',
-                width: wrapWidth
-            },
-            maxLines: 3
-        })
-    }
-
-//
-//------ Funkcja wyświetlająca wstęp
-//
-    introduction(){
-        this.add.image(0, 0, 'textFrame').setOrigin(0,0);
-        this.story = this.add.text(200, 600, "Where is Susie\n\nKod\n P.Sz\n\nPomysł\n P.Sz\n\nGrafika\n P.Sz\n\n\nMiłego grania.",{
-            font: "24px monospace",
-            fill: "#ffffff",
+            backgroundColor: backgroundColor,
+            padding: { x: paddingX, y: paddingY },
             align: "center",
-            // backgroundColor: "#7A0059",
-            fixedWidth: 400,
-            fixedHeight: 400,
+        }).setInteractive()
+
+        buttonStartGame.on('pointerover', () => {
+            buttonStartGame.setBackgroundColor('#5F2614')
         })
-        this.tweens.add({
-            targets: this.story,
-            y: -500,
-            duration: 10000,
-            ease: 'Power',
-            yoyo: false,
-            loop: 0
-        });
-
+        buttonStartGame.on('pointerout', () => {
+            buttonStartGame.setBackgroundColor('#260E04')
+        })
+        buttonStartGame.on('pointerdown', () => {
+            this.scene.start('game')
+        })
     }
+}
+//
+//------ Tworzenie textboxa
+//
+const GetValue = Phaser.Utils.Objects.GetValue;
+let createTextBox = function (scene, x, y, config) {
+    let wrapWidth = GetValue(config, 'wrapWidth', 0);
+    let fixedWidth = GetValue(config, 'fixedWidth', 0);
+    let fixedHeight = GetValue(config, 'fixedHeight', 0);
+    let textBox = scene.rexUI.add.textBox({
+        x: x,
+        y: y,
 
+        background: scene.rexUI.add.roundRectangle(0, 0, 2, 2, 15, BG_COLOR)
+            .setStrokeStyle(2, FRAME_COLOR),
+
+        icon: scene.rexUI.add.roundRectangle(0, 0, 2, 2, 10, DOT_COLOR), // ikonka
+
+        text: getBuiltInText(scene, wrapWidth, fixedWidth, fixedHeight),
+
+        space: {
+            left: 20,
+            right: 20,
+            top: 20,
+            bottom: 20,
+            icon: 10,
+            text: 10,
+        }
+    })
+        .setOrigin(0)
+        .layout();
+
+    textBox
+        .setInteractive()
+        .on('pointerdown', function () {
+            if (this.isTyping) {
+                this.stop(true);
+            } else {
+                this.typeNextPage();
+            }
+        }, textBox)
+        .on('pageend', function () {
+            if (this.isLastPage) {
+                return //start new scene here
+                scene.scene.start('game')
+            }
+        }, textBox)
+    return textBox;
+}
+
+let getBuiltInText = function (scene, wrapWidth, fixedWidth, fixedHeight) {
+    return scene.add.text(0, 0, '', {
+        fontSize: '20px',
+        wordWrap: {
+            width: wrapWidth
+        },
+        maxLines: 6
+    })
+        .setFixedSize(fixedWidth, fixedHeight);
 }
 export default Introduction;
-
-////////////////////////////////////////
-
-
-
-
-
