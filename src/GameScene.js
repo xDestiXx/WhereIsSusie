@@ -6,12 +6,12 @@ class GameScene extends Scene{
         this.oldRoomForSusie = null;
         this.oldCoordForSusie = null;
         this.playerRot = false;
+        this.light = null;
     }
 //
 //------ Preload
 //
     preload(){
-        this.load.image('menu', 'assets/star.png');
 
     }
 //
@@ -21,6 +21,11 @@ class GameScene extends Scene{
         console.log('scena gry')
         this.roomsData = this.cache.json.get('coordData'); // ładowanie całego JSONa do zmiennej
         this.roomsNumbers = this.cache.json.get('roomNumbers') //
+
+        // this.lights.enable();
+        // this.lights.setAmbientColor(0x2C2C2C);
+        //
+        // this.light = this.lights.addLight(0, 0, 100).setColor(0xffffff).setIntensity(4);;
 //
 //------ Wywoływanie funkcji
 //
@@ -53,26 +58,16 @@ class GameScene extends Scene{
         // Horizontal movement
         if (this.cursors.left.isDown) {
             this.player.body.setVelocityX(-speed);
-            this.player.rotation -= 0.1;
         } else if (this.cursors.right.isDown) {
             this.player.body.setVelocityX(speed);
-            this.player.rotation += 0.1;
         }
 
         // Vertical movement
         if (this.cursors.up.isDown) {
             this.player.body.setVelocityY(-speed);
-            if(this.player.body.position.y <= 900 && this.playerRot === true){
-                this.player.angle = 0
-                this.playerRot = false;
-            }
 
         } else if (this.cursors.down.isDown) {
             this.player.body.setVelocityY(speed);
-            if(this.player.body.position.y > 900 && this.playerRot === false){
-                this.player.angle = 180
-                this.playerRot = true;
-            }
         }
 
         if(this.A.isDown){
@@ -84,26 +79,35 @@ class GameScene extends Scene{
 
         // Normalize and scale the velocity so that player can't move faster along a diagonal
         this.player.body.velocity.normalize().scale(speed);
+
+        //Nie działa światło, wyświetla tylko pół radiusa
+        //
+        // this.light.x = this.player.x;
+        // this.light.y = this.player.y;
     }
 //
 //------ Funkcja tworząca mapę
 //
     createMap(){
         this.map = this.make.tilemap({ key: "map" });
-        const tileset = this.map.addTilesetImage("where-is-Susie", "tiles");
-        const belowLayer = this.map.createStaticLayer("BelowPlayer", tileset, 0, 0)
-        this.worldLayer = this.map.createStaticLayer("World", tileset, 0, 0)
-        const aboveLayer = this.map.createStaticLayer("AbovePlayer", tileset, 0, 0)
-        aboveLayer.setDepth(10);
+        const tiles = this.map.addTilesetImage("where-is-Susie", "tiles",32, 32, 1, 2);
+        this.map.createDynamicLayer("BelowPlayer", tiles)
+        // const belowLayer = this.map.createStaticLayer("BelowPlayer", tileset, 0, 0)
+        this.worldLayer = this.map.createDynamicLayer("World", tiles)
+        //const aboveLayer = this.map.createStaticLayer("AbovePlayer", tileset, 0, 0)
+        this.map.createDynamicLayer("AbovePlayer", tiles).setDepth(10)
+        //aboveLayer.setDepth(10);
         this.worldLayer.setCollisionByProperty({ collides: true });
        // this.physics.add.collider(this.player, this.worldLayer);
+
+
 
     }
 //
 //------ Funkcja tworząca gracza
 //
     createPlayer(){
-        this.player = this.physics.add.sprite(250, 400, 'star')
+        this.player = this.physics.add.image(250, 400, 'star')
     }
 //
 //------ Funkcja tworząca kamerę śledzącą gracza
@@ -131,7 +135,7 @@ class GameScene extends Scene{
     createSusie(){
         this.randomRoomForSusie()
 
-        this.susie = this.physics.add.sprite(this.susiePosX, this.susiePosY, 'susie')
+        this.susie = this.physics.add.image(this.susiePosX, this.susiePosY, 'susie').setPipeline('Light2D')
         this.physics.add.collider(this.player, this.susie, this.susieWasFound, null, this)
     }
 //
@@ -210,16 +214,41 @@ class GameScene extends Scene{
 //
 //------ Funkcja
 //
-    timeConsole(){
-        this.time.addEvent({
-            delay: 1000,
-            callback: () =>{
-                this.timee--
-                console.log(this.timee)
-            },
-            loop: true
-            }
-        )
-    }
+//     timer()
+//     {
+//         console.log('create');
+//         // 2:30 in seconds
+//         this.initialTime = 18;
+//
+//         text = this.add.text(32, 32, 'Countdown: ' + this.formatTime(this.initialTime));
+//
+//         // Each 1000 ms call onEvent
+//         timedEvent = this.time.addEvent({ delay: 1000, callback: onEvent, callbackScope: this, loop: true });
+//     }
+//
+//     formatTime(seconds){
+//         // Minutes
+//         var minutes = Math.floor(seconds/60);
+//         // Seconds
+//         var partInSeconds = seconds%60;
+//         // Adds left zeros to seconds
+//         partInSeconds = partInSeconds.toString().padStart(2,'0');
+//         // Returns formated time
+//         return `${minutes}:${partInSeconds}`;
+//     }
+//
+//     function onEvent ()
+//     {
+//         if(this.initialTime === 0){
+//             this.timedEvent.paused = true;
+//         }else{
+//             if(this.initialTime <= 15){
+//                 text.setColor('#FF0000')
+//                 text.setFontSize('22px')
+//             }
+//             this.initialTime -= 1; // One second
+//             text.setText('Countdown: ' + formatTime(this.initialTime));
+//         }
+//     }
 }
 export default GameScene;

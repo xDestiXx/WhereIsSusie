@@ -8,7 +8,7 @@ import Test from "./Test";
 import UIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin'
 
 const config = {
-    type: Phaser.CANVAS,
+    type: Phaser.WEBGL,
     parent: 'phaser-example',
     width: 800,
     height: 600,

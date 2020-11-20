@@ -5,22 +5,21 @@ class PreloadScene extends Scene {
         super('preload');
     }
     preload() {
-        this.load.image('logo', 'assets/logo.png');
-        this.load.image('play-button', 'assets/play.png');
-        this.load.image('about-button', 'assets/about.png');
-        this.load.image('sky', 'assets/sky.png');
+        this.load.image('image_key', ['image_file', 'map_file'])
+
+        this.load.image('logo', ['assets/logo.png', 'assets/logo.png']);
+        this.load.image('play-button', ['assets/play.png', 'assets/play.png']);
+        this.load.image('about-button', ['assets/about.png', 'assets/about.png']);
+        this.load.image('sky', ['assets/sky.png', 'assets/sky.png']);
         //ładowanie assetów gry
-        this.load.image('textFrame', 'assets/TextFrame.png');
-        this.load.image('susie', 'assets/bomb.png');
-        this.load.image('tiles','assets/where-is-Susie.png');
-        this.load.image('star','assets/star.png');
+        this.load.image('textFrame', ['assets/TextFrame.png', 'assets/TextFrame.png']);
+        this.load.image('susie', ['assets/bomb.png', 'assets/bomb.png']);
+        this.load.image('tiles',['assets/where-is-Susie-extruded.png', 'assets/where-is-Susie-extruded.png']);
+        this.load.image('star',['assets/star.png', 'assets/star.png']);
         this.load.tilemapTiledJSON('map', 'JSON/mapaCSM.json');
         this.load.json('coordData', 'JSON/coordinates.json');
         this.load.json('roomNumbers', 'JSON/roomNumbers.json');
-        this.load.spritesheet('dude',
-            'assets/dude.png',
-            { frameWidth: 24, frameHeight: 22 }
-        );
+        this.load.image('menu', ['assets/star.png', 'assets/star.png']);
     }
 
     create() {
