@@ -5,8 +5,6 @@ class PreloadScene extends Scene {
         super('preload');
     }
     preload() {
-        this.load.image('image_key', ['image_file', 'map_file'])
-
         this.load.image('logo', ['assets/logo.png', 'assets/logo.png']);
         this.load.image('play-button', ['assets/play.png', 'assets/play.png']);
         this.load.image('about-button', ['assets/about.png', 'assets/about.png']);
@@ -20,6 +18,9 @@ class PreloadScene extends Scene {
         this.load.json('coordData', 'JSON/coordinates.json');
         this.load.json('roomNumbers', 'JSON/roomNumbers.json');
         this.load.image('menu', ['assets/star.png', 'assets/star.png']);
+        this.load.image('tech1', ['assets/tech1.png', 'assets/tech1.png']);
+        this.load.image('tech2', ['assets/tech2.png', 'assets/tech2.png']);
+        this.load.image('tech3', ['assets/tech3.png', 'assets/tech3.png']);
     }
 
     create() {

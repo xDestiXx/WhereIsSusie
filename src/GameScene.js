@@ -7,6 +7,8 @@ class GameScene extends Scene{
         this.oldCoordForSusie = null;
         this.playerRot = false;
         this.light = null;
+        this.level = 1;
+        //this.techGroup = this.add.group();
     }
 //
 //------ Preload
@@ -44,8 +46,9 @@ class GameScene extends Scene{
             paused: false
         });
 
-        //TODO: dodać do jsona info czy obrócony czy nie
         this.roomNumbers()
+        this.addTechs()
+
 
     }
     update(time, delta) {
@@ -129,13 +132,54 @@ class GameScene extends Scene{
         this.D = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
         this.spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
     }
+
+//
+//------ Funkcja dodająca techników
+    //TODO: dodanie grupy plus poprawa fizyki techników
+    addTechs() {
+        for (let i = 1; i <= 3; i++) {
+            switch (i) {
+                case 1: {
+                    this.tech = this.physics.add.image(300, 300, 'tech1')
+                    //this.techGroup.add(this.tech)
+                    break;
+                }
+                case 2: {
+                    this.tech = this.physics.add.image(400, 300, 'tech2')
+                    //this.techGroup.add(this.tech)
+                    break;
+                }
+                case 3: {
+                    this.tech = this.physics.add.image(500, 300, 'tech3')
+                    //this.techGroup.add(this.tech)
+                    break;
+                }
+
+
+            }
+        }
+        this.physics.add.collider(this.player, this.tech, this.techCol, null, this)
+    }
+        // function createUfos() {
+        //     for ( var i = 0; i < 4; i++) {
+        //         for ( var j = 0; j < 2; j++) {
+        //             if ( i%2 == 0) {
+        //                 var ufo = ufos.create(i * (game.world.width) / 6 + j * game.world.width / 6, j * game.world.width / 8, 'ufo');
+        //             } else {
+        //                 var ufo = ufos.create(i * (game.world.width) / 6 + j * game.world.width / 6, j * game.world.width / 8, 'ufo_blue')
+        //             }
+        //             ufo.anchor.setTo(0.5, 0.5);
+        //         }
+        //     }
+        // }
+//
 //
 //------ Funkcja tworząca Susie
 //
     createSusie(){
         this.randomRoomForSusie()
 
-        this.susie = this.physics.add.image(this.susiePosX, this.susiePosY, 'susie').setPipeline('Light2D')
+        this.susie = this.physics.add.image(this.susiePosX, this.susiePosY, 'susie')
         this.physics.add.collider(this.player, this.susie, this.susieWasFound, null, this)
     }
 //
@@ -211,6 +255,16 @@ class GameScene extends Scene{
             })
         }
     }
+    techCol(){
+        let info = this.add.text(this.tech.x, this.tech.y, 'susie jest gdzies',{
+            font: "18px monospace",
+            backgroundColor: "#6B6E6E"
+        })
+    }
+//
+//------ Funkcja dodająca techników
+//
+
 //
 //------ Funkcja
 //
