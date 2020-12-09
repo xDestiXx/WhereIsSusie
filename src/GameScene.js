@@ -8,7 +8,7 @@ class GameScene extends Scene{
         this.playerRot = false;
         this.light = null;
         this.level = 1;
-        //this.techGroup = this.add.group();
+        //this.techGroup = this.physics.add.group();
     }
 //
 //------ Preload
@@ -130,6 +130,7 @@ class GameScene extends Scene{
         this.S = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
         this.A = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
         this.D = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
+        this.P = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P);
         this.spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
     }
 
@@ -137,28 +138,30 @@ class GameScene extends Scene{
 //------ Funkcja dodająca techników
     //TODO: dodanie grupy plus poprawa fizyki techników
     addTechs() {
+        this.techGroup = this.add.group();
         for (let i = 1; i <= 3; i++) {
             switch (i) {
                 case 1: {
-                    this.tech = this.physics.add.image(300, 300, 'tech1')
-                    //this.techGroup.add(this.tech)
+                    this.tech1 = this.physics.add.image(300, 300, 'tech1')
+                    this.techGroup.add(this.tech1)
                     break;
                 }
                 case 2: {
-                    this.tech = this.physics.add.image(400, 300, 'tech2')
-                    //this.techGroup.add(this.tech)
+                    this.tech2 = this.physics.add.image(400, 300, 'tech2')
+                    this.techGroup.add(this.tech2)
                     break;
                 }
                 case 3: {
-                    this.tech = this.physics.add.image(500, 300, 'tech3')
-                    //this.techGroup.add(this.tech)
+                    this.tech3 = this.physics.add.image(500, 300, 'tech3')
+                    this.techGroup.add(this.tech3)
                     break;
                 }
 
 
             }
         }
-        this.physics.add.collider(this.player, this.tech, this.techCol, null, this)
+        this.physics.add.collider(this.player, this.techGroup, this.techCol, null, this)
+        this.physics.add.collider(this.worldLayer, this.techGroup)
     }
         // function createUfos() {
         //     for ( var i = 0; i < 4; i++) {
@@ -256,10 +259,24 @@ class GameScene extends Scene{
         }
     }
     techCol(){
-        let info = this.add.text(this.tech.x, this.tech.y, 'susie jest gdzies',{
-            font: "18px monospace",
-            backgroundColor: "#6B6E6E"
-        })
+        this.techGroup.children.iterate(function (child) {
+
+            child.body.moves = false;
+            // let info = this.add.text(child.body.x, child.body.y, 'tutaj jest susie',{
+            //     font: "18px monospace",
+            //     backgroundColor: "#6B6E6E"
+            // })
+
+        });
+        // let info = this.add.text(this.techGroup,.x, this.tech.y, 'susie jest gdzies',{
+        //     font: "18px monospace",
+        //     backgroundColor: "#6B6E6E"
+        // })
+        // if (this.P.isDown){
+        //     this.physics.resume()
+        //     this.player.setPosition(this.player.position.x+20, this.player.position.y+20)
+        // }
+        console.log(this.techGroup.children)
     }
 //
 //------ Funkcja dodająca techników
